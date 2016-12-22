@@ -955,6 +955,32 @@ function generate-certs {
   }
 }
 
+function download-cfssl {
+  mkdir -p "${KUBE_TEMP}/cfssl"
+  pushd "${KUBE_TEMP}/cfssl"
+
+  kernel=$(uname -s)
+  case "${kernel}" in
+    Linux)
+      curl -s -L -o cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+      curl -s -L -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+      ;;
+    Darwin)
+      curl -s -L -o cfssl https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
+      curl -s -L -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
+      ;;
+    *)
+      echo "Unknown, unsupported platform: ${kernel}." >&2
+      echo "Supported platforms: Linux, Darwin." >&2
+      exit 2
+  esac
+
+  chmod +x cfssl
+  chmod +x cfssljson
+
+  popd
+}
+
 #
 # Using provided master env, extracts value from provided key.
 #
