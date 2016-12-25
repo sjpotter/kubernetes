@@ -85,14 +85,18 @@ func (sp *summaryProviderImpl) Get() (*stats.Summary, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed RootFsInfo: %v", err)
 	}
-	imageFsInfo, err := sp.provider.ImagesFsInfo()
-	if err != nil {
-		return nil, fmt.Errorf("failed DockerImagesFsInfo: %v", err)
-	}
-	imageStats, err := sp.runtime.ImageStats()
-	if err != nil || imageStats == nil {
-		return nil, fmt.Errorf("failed ImageStats: %v", err)
-	}
+        imageFsInfo, err := sp.provider.ImagesFsInfo()
+        if err != nil {
+               glog.Warningf("failed DockerImagesFsInfo: %v", err)
+//             return nil, fmt.Errorf("failed DockerImagesFsInfo: %v", err)
+               imageFsInfo = cadvisorapiv2.FsInfo{}
+        }
+        imageStats, err := sp.runtime.ImageStats()
+        if err != nil || imageStats == nil {
+               glog.Warningf("failed ImageStats: %v", err)
+//             return nil, fmt.Errorf("failed ImageStats: %v", err)
+               imageStats = &container.ImageStats{}
+        }
 	sb := &summaryBuilder{sp.fsResourceAnalyzer, node, nodeConfig, rootFsInfo, imageFsInfo, *imageStats, infos}
 	return sb.build()
 }
