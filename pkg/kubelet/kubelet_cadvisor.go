@@ -17,6 +17,7 @@ limitations under the License.
 package kubelet
 
 import (
+	"github.com/golang/glog"
 	cadvisorapi "github.com/google/cadvisor/info/v1"
 	cadvisorapiv2 "github.com/google/cadvisor/info/v2"
 	kubecontainer "k8s.io/kubernetes/pkg/kubelet/container"
@@ -60,7 +61,20 @@ func (kl *Kubelet) HasDedicatedImageFs() (bool, error) {
 
 // GetContainerInfoV2 returns stats (from Cadvisor) for containers.
 func (kl *Kubelet) GetContainerInfoV2(name string, options cadvisorapiv2.RequestOptions) (map[string]cadvisorapiv2.ContainerInfo, error) {
-	return kl.cadvisor.ContainerInfoV2(name, options)
+	runtime := kl.containerRuntime
+
+	v, err := runtime.Version()
+	glog.Infof("runtime.Version response: v = %q, err = %v", v.String(), err)
+	t := runtime.Type()
+	glog.Infof("runtime.Type = %v", t)
+
+	switch t {
+	case "infranetes":
+		//only called with name = / and options recursive in k8s
+		return kl.infranetesInfo(options.Count)
+	default:
+		return kl.cadvisor.ContainerInfoV2(name, options)
+	}
 }
 
 // ImagesFsInfo returns information about docker image fs usage from
