@@ -83,6 +83,9 @@ func (h *HeapsterMetricsClient) GetResourceMetric(resource v1.ResourceName, name
 	metricPath := fmt.Sprintf("/apis/metrics/v1alpha1/namespaces/%s/pods", namespace)
 	params := map[string]string{"labelSelector": selector.String()}
 
+	//Testing
+	url := h.services.ProxyGet(h.heapsterScheme, h.heapsterService, h.heapsterPort, metricPath, params).URL()
+
 	resultRaw, err := h.services.
 		ProxyGet(h.heapsterScheme, h.heapsterService, h.heapsterPort, metricPath, params).
 		DoRaw()
@@ -99,7 +102,7 @@ func (h *HeapsterMetricsClient) GetResourceMetric(resource v1.ResourceName, name
 	}
 
 	if len(metrics.Items) == 0 {
-		return nil, time.Time{}, fmt.Errorf("no metrics returned from heapster")
+		return nil, time.Time{}, fmt.Errorf("no metrics returned from heapster: url = %+v", url.String())
 	}
 
 	res := make(PodResourceInfo, len(metrics.Items))
