@@ -515,6 +515,9 @@ func autoConvert_v1alpha1_KubeletConfiguration_To_componentconfig_KubeletConfigu
 	out.KubeReservedCgroup = in.KubeReservedCgroup
 	out.EnforceNodeAllocatable = *(*[]string)(unsafe.Pointer(&in.EnforceNodeAllocatable))
 	out.ExperimentalNodeAllocatableIgnoreEvictionThreshold = in.ExperimentalNodeAllocatableIgnoreEvictionThreshold
+	out.ExperimentalOverrideLimits = in.ExperimentalOverrideLimits
+	out.CPULimit = in.CPULimit
+	out.MemLimit = in.MemLimit
 	return nil
 }
 
@@ -692,6 +695,7 @@ func autoConvert_componentconfig_KubeletConfiguration_To_v1alpha1_KubeletConfigu
 	out.FeatureGates = in.FeatureGates
 	out.ExperimentalFailSwapOn = in.ExperimentalFailSwapOn
 	out.ExperimentalCheckNodeCapabilitiesBeforeMount = in.ExperimentalCheckNodeCapabilitiesBeforeMount
+<<<<<<< HEAD
 	out.KeepTerminatedPodVolumes = in.KeepTerminatedPodVolumes
 	out.SystemReserved = *(*map[string]string)(unsafe.Pointer(&in.SystemReserved))
 	out.KubeReserved = *(*map[string]string)(unsafe.Pointer(&in.KubeReserved))
@@ -703,6 +707,11 @@ func autoConvert_componentconfig_KubeletConfiguration_To_v1alpha1_KubeletConfigu
 		out.EnforceNodeAllocatable = *(*[]string)(unsafe.Pointer(&in.EnforceNodeAllocatable))
 	}
 	out.ExperimentalNodeAllocatableIgnoreEvictionThreshold = in.ExperimentalNodeAllocatableIgnoreEvictionThreshold
+=======
+	out.ExperimentalOverrideLimits = in.ExperimentalOverrideLimits
+	out.CPULimit = in.CPULimit
+	out.MemLimit = in.MemLimit
+>>>>>>> 1636f36dad... allow infranetes to provide infinite resources
 	return nil
 }
 

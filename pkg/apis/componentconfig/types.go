@@ -505,6 +505,11 @@ type KubeletConfiguration struct {
 	// This flag, if set, will avoid including `EvictionHard` limits while computing Node Allocatable.
 	// Refer to [Node Allocatable](https://git.k8s.io/community/contributors/design-proposals/node-allocatable.md) doc for more information.
 	ExperimentalNodeAllocatableIgnoreEvictionThreshold bool
+	// Thise flag, if set, enables kubelet to override the detected cpu and memory limits
+        ExperimentalOverrideLimits bool
+	// These flags, if set, work with the above Override flag to restrict the limits, otherwise they are unrestricted
+        CPULimit int64
+        MemLimit int64
 }
 
 type KubeletAuthorizationMode string

@@ -359,6 +359,9 @@ func DeepCopy_v1alpha1_KubeletConfiguration(in interface{}, out interface{}, c *
 			*out = make([]string, len(*in))
 			copy(*out, *in)
 		}
+		out.ExperimentalOverrideLimits = in.ExperimentalOverrideLimits
+		out.CPULimit = in.CPULimit
+		out.MemLimit = in.MemLimit
 		return nil
 	}
 }

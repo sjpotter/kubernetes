@@ -268,6 +268,9 @@ func DeepCopy_componentconfig_KubeletConfiguration(in interface{}, out interface
 			*out = make([]string, len(*in))
 			copy(*out, *in)
 		}
+		out.ExperimentalOverrideLimits = in.ExperimentalOverrideLimits
+		out.CPULimit = in.CPULimit
+		out.MemLimit = in.MemLimit
 		return nil
 	}
 }
