@@ -502,6 +502,25 @@ func (kl *Kubelet) setNodeStatusMachineInfo(node *v1.Node) {
 			node.Status.Capacity[rName] = rCap
 		}
 
+		if kl.kubeletConfiguration.ExperimentalOverrideLimits {
+			switch {
+			case kl.kubeletConfiguration.CPULimit == 0:
+				node.Status.Capacity[v1.ResourceCPU] = *resource.NewMilliQuantity(math.MaxInt64, resource.DecimalSI)
+			case kl.kubeletConfiguration.CPULimit < 0:
+				break // don't do anything
+			default:
+				node.Status.Capacity[v1.ResourceCPU] = *resource.NewMilliQuantity(kl.kubeletConfiguration.CPULimit*1000, resource.DecimalSI)
+			}
+			switch {
+			case kl.kubeletConfiguration.MemLimit == 0:
+				node.Status.Capacity[v1.ResourceMemory] = *resource.NewQuantity(math.MaxInt64, resource.BinarySI)
+			case kl.kubeletConfiguration.MemLimit < 0:
+				break // don't do anything
+			default:
+				node.Status.Capacity[v1.ResourceMemory] = *resource.NewQuantity(kl.kubeletConfiguration.MemLimit, resource.BinarySI)
+			}
+		}
+
 		if kl.podsPerCore > 0 {
 			node.Status.Capacity[v1.ResourcePods] = *resource.NewQuantity(
 				int64(math.Min(float64(info.NumCores*kl.podsPerCore), float64(kl.maxPods))), resource.DecimalSI)
