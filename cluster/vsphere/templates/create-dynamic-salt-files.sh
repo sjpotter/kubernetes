@@ -124,6 +124,7 @@ e2e_storage_test_environment: "${E2E_STORAGE_TEST_ENVIRONMENT:-false}"
 cluster_cidr: "$NODE_IP_RANGES"
 allocate_node_cidrs: "${ALLOCATE_NODE_CIDRS:-true}"
 admission_control: NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,DefaultStorageClass,ResourceQuota
+network_provider: ${NETWORK_PROVIDER:-kubenet}
 EOF
 
 mkdir -p /srv/salt-overlay/salt/nginx

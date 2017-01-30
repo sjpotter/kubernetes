@@ -329,6 +329,7 @@ function setup-pod-routes {
 
     network=""
     top2_octets_final=$(echo $NODE_IP_RANGES | awk -F "." '{ print $1 "." $2 }') # Assume that a 24 bit mask per node
+    echo "top2_octets_final = ${top2_octets_final}"
 
     attempt=0
     max_attempt=60
@@ -337,6 +338,7 @@ function setup-pod-routes {
 
       network=$(kube-ssh ${KUBE_NODE_IP_ADDRESSES[$i]} 'sudo ip route show | grep -E "dev cbr0" | cut -d     " " -f1')
       top2_octets_read=$(echo $network | awk -F "." '{ print $1 "." $2 }')
+      echo "top2_octets_read = ${top2_octets_read}"
 
       if [[ "$top2_octets_read" == "$top2_octets_final" ]]; then
         break

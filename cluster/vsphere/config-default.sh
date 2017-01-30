@@ -68,3 +68,5 @@ MASTER_EXTRA_SANS="DNS:kubernetes,DNS:kubernetes.default,DNS:kubernetes.default.
 
 # Optional: if set to true, kube-up will configure the cluster to run e2e tests.
 E2E_STORAGE_TEST_ENVIRONMENT=${KUBE_E2E_STORAGE_TEST_ENVIRONMENT:-false}
+
+NETWORK_PROVIDER="${NETWORK_PROVIDER:-kubenet}" # kubenet, opencontrail, flannel
